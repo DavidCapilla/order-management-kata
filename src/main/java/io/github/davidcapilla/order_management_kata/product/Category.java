@@ -1,4 +1,4 @@
-package io.github.davidcapilla.order_management_kata.model;
+package io.github.davidcapilla.order_management_kata.product;
 
 import java.util.Optional;
 import lombok.Data;
