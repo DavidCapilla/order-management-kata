@@ -4,7 +4,11 @@ import static java.util.Objects.isNull;
 
 import io.github.davidcapilla.order_management_kata.customer.CustomerDetails;
 import io.github.davidcapilla.order_management_kata.customer.Seat;
+import io.github.davidcapilla.order_management_kata.payment.PaymentDetails;
+import io.github.davidcapilla.order_management_kata.product.Product;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +16,8 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class OrderService {
+
+    private static final boolean UPDATE = false;
 
     private final OrderRepository orderRepository;
 
@@ -44,6 +50,33 @@ public class OrderService {
         return orderRepository.save(cancelledOrder);
     }
 
+    public Order updateOrder(Order proposedOrder) {
+
+        UUID orderId = proposedOrder.id();
+        if (isNull(orderId)) {
+            throw new IllegalArgumentException("Order id cannot be null");
+        }
+        Order storedOrder = orderRepository.findById(orderId);
+        if (storedOrder.status() != OrderStatus.OPEN) {
+            throw new IllegalArgumentException("Order with id " + orderId + " is not open");
+        }
+
+        if (UPDATE) {
+            List<Product> updatedProducts = updateProducts(proposedOrder);
+            PaymentDetails updatedPaymentDetails = updatePaymentDetails(proposedOrder, storedOrder,
+                                                                        updatedProducts);
+            CustomerDetails updatedCustomerDetails = updateCustomerDetails(proposedOrder, storedOrder);
+            return orderRepository.save(Order.builder()
+                                                .id(storedOrder.id())
+                                                .products(updatedProducts)
+                                                .paymentDetails(updatedPaymentDetails)
+                                                .status(storedOrder.status())
+                                                .customerDetails(updatedCustomerDetails)
+                                                .build());
+        }
+        return storedOrder;
+    }
+
     private void assertExistingSeat(Seat seat) {
 
         if (isNull(seat)) {
@@ -55,5 +88,21 @@ public class OrderService {
         if (seat.letter().isEmpty() || seat.number().isEmpty()) {
             throw new IllegalArgumentException("Seat letter and number cannot be empty");
         }
+    }
+
+    private CustomerDetails updateCustomerDetails(Order proposedOrder, Order storedOrder) {
+
+        return new CustomerDetails(proposedOrder.customerDetails().email(),
+                                   storedOrder.customerDetails().seat());
+    }
+
+    private List<Product> updateProducts(Order proposedOrder) {
+        // TODO: Pending checking stock
+        return new ArrayList<>(proposedOrder.products());
+    }
+
+    private PaymentDetails updatePaymentDetails(Order proposedOrder, Order storedOrder, List<Product> products) {
+        // TODO: Pending updating payment details
+        return null;
     }
 }
