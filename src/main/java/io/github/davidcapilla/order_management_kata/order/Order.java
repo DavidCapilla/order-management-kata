@@ -7,7 +7,8 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record Order(List<Product> products,
+public record Order(Long id,
+                    List<Product> products,
                     PaymentDetails paymentDetails,
                     OrderStatus status,
                     CustomerDetails customerDetails) {
