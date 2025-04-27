@@ -5,7 +5,9 @@ import static java.util.Objects.isNull;
 import io.github.davidcapilla.order_management_kata.customer.CustomerDetails;
 import io.github.davidcapilla.order_management_kata.customer.Seat;
 import java.util.Collections;
+import org.springframework.stereotype.Service;
 
+@Service
 public class OrderService {
 
     public Order createOrder(Seat seat) {
