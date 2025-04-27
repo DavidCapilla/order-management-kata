@@ -2,10 +2,12 @@ package io.github.davidcapilla.order_management_kata.order;
 
 
 import io.github.davidcapilla.order_management_kata.customer.Seat;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,11 @@ public class OrderController {
     @PostMapping("/create")
     public Order createOrder(@RequestBody Seat seat) {
         return orderService.createOrder(seat);
+    }
+
+    @PostMapping("cancel/{orderId}")
+    public Order cancelOrder(@PathVariable UUID orderId) {
+        return orderService.cancelOrder(orderId);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

@@ -26,6 +26,24 @@ public class OrderService {
                                             .build());
     }
 
+    public Order cancelOrder(UUID orderId) {
+
+        Order order = orderRepository.findById(orderId);
+        if (isNull(order)) {
+            throw new IllegalArgumentException("Order with id " + orderId + " not found");
+        }
+        if (order.status() != OrderStatus.OPEN) {
+            throw new IllegalArgumentException("Order with id " + orderId + " is not open");
+        }
+        Order cancelledOrder = Order.builder()
+                .id(order.id())
+                .products(order.products())
+                .status(OrderStatus.DROPPED)
+                .customerDetails(order.customerDetails())
+                .build();
+        return orderRepository.save(cancelledOrder);
+    }
+
     private void assertExistingSeat(Seat seat) {
 
         if (isNull(seat)) {
