@@ -3,6 +3,9 @@ package io.github.davidcapilla.order_management_kata.order;
 
 import io.github.davidcapilla.order_management_kata.customer.Seat;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,5 +21,10 @@ public class OrderController {
     @PostMapping("/create")
     public Order createOrder(@RequestBody Seat seat) {
         return orderService.createOrder(seat);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }
