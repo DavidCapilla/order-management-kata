@@ -54,7 +54,7 @@ public class InitialStock {
                 new Price(44.00),
                 perfumesCategory,
                 new Image("https://product-images.s3.amazonaws.com/perfumes/boss-woman.jpg"));
-        result.put(bossPerfumeWoman.id(), new Stock(bossPerfumeWoman, 5));
+        result.put(bossPerfumeWoman.id(), new Stock(bossPerfumeWoman, 1));
 
         return result;
     }
