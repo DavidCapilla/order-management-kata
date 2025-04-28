@@ -2,6 +2,7 @@ package io.github.davidcapilla.order_management_kata.order;
 
 
 import io.github.davidcapilla.order_management_kata.customer.Seat;
+import io.github.davidcapilla.order_management_kata.product.ProductService;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderController {
 
     private OrderService orderService;
+    private ProductService productService;
 
     @PostMapping
     public Order createOrder(@RequestBody Seat seat) {
@@ -33,6 +35,9 @@ public class OrderController {
 
     @PutMapping
     public Order updateOrder(@RequestBody Order order) {
+        if (!productService.hasStock(order.products())) {
+            throw new IllegalArgumentException("Some products are out of stock");
+        }
         return orderService.updateOrder(order);
     }
 
