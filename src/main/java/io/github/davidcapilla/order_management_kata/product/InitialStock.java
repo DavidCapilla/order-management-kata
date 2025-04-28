@@ -13,8 +13,8 @@ public class InitialStock {
 
         ConcurrentHashMap<UUID, Stock> result = new ConcurrentHashMap<>();
 
-        Category foodCategory = new Category(UUID.fromString("f48614d1-0dc5-4166-a3b5-69a283feae19"), "food");
-        Category perfumesCategory = new Category(UUID.fromString("97de3238-827b-49f9-b762-329dfd2a80a7"), "perfumes");
+        Category foodCategory = new Category(UUID.fromString("f48614d1-0dc5-4166-a3b5-69a283feae19"), "food", null);
+        Category perfumesCategory = new Category(UUID.fromString("97de3238-827b-49f9-b762-329dfd2a80a7"), "perfumes", null);
 
         Product bltSandwich = new Product(
                 UUID.fromString("8e7f052c-982b-451f-8f01-f305078ef5c9"),

@@ -39,7 +39,8 @@ class ProductServiceTest {
                 new Price(100.0),
                 new Category(
                         UUID.randomUUID(),
-                        "Test Category"),
+                        "Test Category",
+                        null),
                 new Image("url/to/image.jpg"));
 
         Stock stock = new Stock(testProduct, 10);
