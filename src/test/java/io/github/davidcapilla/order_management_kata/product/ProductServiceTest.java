@@ -15,6 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
@@ -74,5 +76,86 @@ class ProductServiceTest {
         assertThat(result, is(notNullValue()));
         assertThat(result, containsInAnyOrder(product1, product2, product3)
         );
+    }
+
+    @Test
+    void hasStock_whenProductNotFound_throwsIllegalArgumentException() {
+        List<Product> products = List.of(new Product(
+                UUID.randomUUID(),
+                "Test Product",
+                new Price(100.0),
+                new Category(
+                        UUID.randomUUID(),
+                        "Test Category",
+                        null),
+                new Image("url/to/image.jpg")));
+        assertThrows(IllegalArgumentException.class,
+                     () -> productService.hasStock(products));
+    }
+
+    @Test
+//    use 'lenient' strictness
+    @MockitoSettings(strictness = Strictness.LENIENT)
+    void hasStock_whenNotEnoughStock_thenReturnFalse() {
+
+        Product product1 = mock(Product.class);
+        Product product2 = mock(Product.class);
+        Product product3 = mock(Product.class);
+        UUID product1Id = UUID.randomUUID();
+        UUID product2Id = UUID.randomUUID();
+        UUID product3Id = UUID.randomUUID();
+        when(product1.id()).thenReturn(product1Id);
+        when(product2.id()).thenReturn(product2Id);
+        when(product3.id()).thenReturn(product3Id);
+
+        Stock stock1 = new Stock(product1, 2);
+        Stock stock2 = new Stock(product2, 3);
+        Stock stock3 = new Stock(product3, 1);
+
+        when(productStockRepository.findById(product1Id)).thenReturn(stock1);
+        when(productStockRepository.findById(product2Id)).thenReturn(stock2);
+        when(productStockRepository.findById(product3Id)).thenReturn(stock3);
+
+        boolean result = productService.hasStock(
+                List.of(
+                        product1,
+                        product2,
+                        product3,
+                        product1,
+                        product3));
+
+        assertThat(result, is(false));
+    }
+
+    @Test
+    void hasStock_whenEnoughStock_thenReturnTrue() {
+
+        Product product1 = mock(Product.class);
+        Product product2 = mock(Product.class);
+        Product product3 = mock(Product.class);
+        UUID product1Id = UUID.randomUUID();
+        UUID product2Id = UUID.randomUUID();
+        UUID product3Id = UUID.randomUUID();
+        when(product1.id()).thenReturn(product1Id);
+        when(product2.id()).thenReturn(product2Id);
+        when(product3.id()).thenReturn(product3Id);
+
+        Stock stock1 = new Stock(product1, 2);
+        Stock stock2 = new Stock(product2, 3);
+        Stock stock3 = new Stock(product3, 5);
+
+        when(productStockRepository.findById(product1Id)).thenReturn(stock1);
+        when(productStockRepository.findById(product2Id)).thenReturn(stock2);
+        when(productStockRepository.findById(product3Id)).thenReturn(stock3);
+
+        boolean result = productService.hasStock(
+                List.of(
+                        product1,
+                        product2,
+                        product3,
+                        product1,
+                        product3));
+
+        assertThat(result, is(true));
     }
 }
