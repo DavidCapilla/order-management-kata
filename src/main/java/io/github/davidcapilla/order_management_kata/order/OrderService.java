@@ -5,6 +5,7 @@ import static java.util.Objects.isNull;
 import io.github.davidcapilla.order_management_kata.customer.CustomerDetails;
 import io.github.davidcapilla.order_management_kata.customer.Seat;
 import io.github.davidcapilla.order_management_kata.payment.PaymentDetails;
+import io.github.davidcapilla.order_management_kata.product.Price;
 import io.github.davidcapilla.order_management_kata.product.Product;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +28,12 @@ public class OrderService {
         return orderRepository.save(Order.builder()
                                             .id(UUID.randomUUID())
                                             .products(Collections.emptyList())
+                                            .paymentDetails(new PaymentDetails(
+                                                    new Price(0.0),
+                                                    "",
+                                                    null,
+                                                    null,
+                                                    null))
                                             .status(OrderStatus.OPEN)
                                             .customerDetails(new CustomerDetails(null, seat))
                                             .build());
