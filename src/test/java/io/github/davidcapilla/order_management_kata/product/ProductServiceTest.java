@@ -1,11 +1,14 @@
 package io.github.davidcapilla.order_management_kata.product;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,5 +53,25 @@ class ProductServiceTest {
         assertThat(result.price(), is(testProduct.price()));
         assertThat(result.category(), is(testProduct.category()));
         assertThat(result.image(), is(testProduct.image()));
+    }
+
+    @Test
+    void getProducts_returnsAllProducts() {
+
+        Product product1 = mock(Product.class);
+        Product product2 = mock(Product.class);
+        Product product3 = mock(Product.class);
+
+        List<Stock> stock = List.of(
+                new Stock(product1, 10),
+                new Stock(product2, 20),
+                new Stock(product3, 30));
+
+        when(productStockRepository.findAll()).thenReturn(stock);
+
+        List<Product> result = productService.getProducts();
+        assertThat(result, is(notNullValue()));
+        assertThat(result, containsInAnyOrder(product1, product2, product3)
+        );
     }
 }

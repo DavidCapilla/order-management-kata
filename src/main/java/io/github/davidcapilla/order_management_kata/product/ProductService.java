@@ -2,6 +2,7 @@ package io.github.davidcapilla.order_management_kata.product;
 
 import static java.util.Objects.isNull;
 
+import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,12 @@ import org.springframework.stereotype.Service;
 public class ProductService {
 
     private final ProductStockRepository productStockRepository;
+
+    public List<Product> getProducts() {
+        return productStockRepository.findAll().stream()
+                .map(Stock::product)
+                .toList();
+    }
 
     public Product getProduct(UUID id) {
 
