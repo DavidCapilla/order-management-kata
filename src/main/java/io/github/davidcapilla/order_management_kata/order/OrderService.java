@@ -18,8 +18,6 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class OrderService {
 
-    private static final boolean UPDATE = false;
-
     private final OrderRepository orderRepository;
 
     public Order createOrder(Seat seat) {
@@ -71,20 +69,17 @@ public class OrderService {
             throw new IllegalArgumentException("Order with id " + orderId + " is not open");
         }
 
-        if (UPDATE) {
-            List<Product> updatedProducts = updateProducts(proposedOrder);
-            PaymentDetails updatedPaymentDetails = updatePaymentDetails(proposedOrder, storedOrder,
+        List<Product> updatedProducts = updateProducts(proposedOrder);
+        PaymentDetails updatedPaymentDetails = updatePaymentDetails(proposedOrder, storedOrder,
                                                                         updatedProducts);
-            CustomerDetails updatedCustomerDetails = updateCustomerDetails(proposedOrder, storedOrder);
-            return orderRepository.save(Order.builder()
-                                                .id(storedOrder.id())
-                                                .products(updatedProducts)
-                                                .paymentDetails(updatedPaymentDetails)
-                                                .status(storedOrder.status())
-                                                .customerDetails(updatedCustomerDetails)
-                                                .build());
-        }
-        return storedOrder;
+        CustomerDetails updatedCustomerDetails = updateCustomerDetails(proposedOrder, storedOrder);
+        return orderRepository.save(Order.builder()
+                                            .id(storedOrder.id())
+                                            .products(updatedProducts)
+                                            .paymentDetails(updatedPaymentDetails)
+                                            .status(storedOrder.status())
+                                            .customerDetails(updatedCustomerDetails)
+                                            .build());
     }
 
     private void assertExistingSeat(Seat seat) {
@@ -107,12 +102,19 @@ public class OrderService {
     }
 
     private List<Product> updateProducts(Order proposedOrder) {
-        // TODO: Pending checking stock
         return new ArrayList<>(proposedOrder.products());
     }
 
-    private PaymentDetails updatePaymentDetails(Order proposedOrder, Order storedOrder, List<Product> products) {
-        // TODO: Pending updating payment details
-        return null;
+    private PaymentDetails updatePaymentDetails(
+            Order proposedOrder, Order storedOrder, List<Product> products) {
+
+        double totalPrice = products.stream().mapToDouble(product -> product.price().amount()).sum();
+        return new PaymentDetails(
+                new Price(totalPrice),
+                proposedOrder.paymentDetails().cardToken(),
+                storedOrder.paymentDetails().paymentStatus(),
+                storedOrder.paymentDetails().paymentDate(),
+                storedOrder.paymentDetails().paymentGateway()
+        );
     }
 }
