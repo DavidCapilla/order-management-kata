@@ -57,6 +57,9 @@ public class OrderService {
             throw new IllegalArgumentException("Order id cannot be null");
         }
         Order storedOrder = orderRepository.findById(orderId);
+        if (isNull(storedOrder)) {
+            throw new IllegalArgumentException("Order not registered");
+        }
         if (storedOrder.status() != OrderStatus.OPEN) {
             throw new IllegalArgumentException("Order with id " + orderId + " is not open");
         }

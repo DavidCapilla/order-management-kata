@@ -101,4 +101,38 @@ class OrderServiceTest {
                 () -> orderService.cancelOrder(orderId));
         assertThat(exception.getMessage(), is("Order with id " + orderId + " is not open"));
     }
+
+    @Test
+    void updateOrder_whenOrderNotFound_ThrowsIllegalArgumentException() {
+
+        Order order = Order.builder()
+                .id(UUID.randomUUID())
+                .products(Collections.emptyList())
+                .status(OrderStatus.OPEN)
+                .customerDetails(new CustomerDetails(null, new Seat("E", "1")))
+                .build();
+
+        when(orderRepository.findById(order.id())).thenReturn(null);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> orderService.updateOrder(order));
+        assertThat(exception.getMessage(), is("Order not registered"));
+    }
+
+    @Test
+    void updateOrder_whenOrderNotOpen_ThrowsIllegalArgumentException() {
+
+        Order order = Order.builder()
+                .id(UUID.randomUUID())
+                .products(Collections.emptyList())
+                .status(OrderStatus.DROPPED)
+                .customerDetails(new CustomerDetails(null, new Seat("E", "1")))
+                .build();
+
+        when(orderRepository.findById(order.id())).thenReturn(order);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> orderService.updateOrder(order));
+        assertThat(exception.getMessage(), is("Order with id " + order.id() + " is not open"));
+    }
 }
