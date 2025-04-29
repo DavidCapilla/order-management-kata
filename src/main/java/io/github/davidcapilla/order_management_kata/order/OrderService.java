@@ -5,6 +5,7 @@ import static java.util.Objects.isNull;
 import io.github.davidcapilla.order_management_kata.customer.CustomerDetails;
 import io.github.davidcapilla.order_management_kata.customer.Seat;
 import io.github.davidcapilla.order_management_kata.payment.PaymentDetails;
+import io.github.davidcapilla.order_management_kata.payment.PaymentStatus;
 import io.github.davidcapilla.order_management_kata.product.Price;
 import io.github.davidcapilla.order_management_kata.product.Product;
 import java.util.ArrayList;
@@ -35,6 +36,15 @@ public class OrderService {
                                             .status(OrderStatus.OPEN)
                                             .customerDetails(new CustomerDetails(null, seat))
                                             .build());
+    }
+
+    public Order getOrder(UUID orderId) {
+
+        Order order = orderRepository.findById(orderId);
+        if (isNull(order)) {
+            throw new IllegalArgumentException("Order with id " + orderId + " not found");
+        }
+        return order;
     }
 
     public Order cancelOrder(UUID orderId) {
@@ -80,6 +90,30 @@ public class OrderService {
                                             .status(storedOrder.status())
                                             .customerDetails(updatedCustomerDetails)
                                             .build());
+    }
+
+    public Order processOrder(UUID orderId, PaymentDetails paymentDetails) {
+
+        Order order = orderRepository.findById(orderId);
+        if (isNull(order)) {
+            throw new IllegalArgumentException("Order with id " + orderId + " not found");
+        }
+        if (order.status() != OrderStatus.OPEN) {
+            throw new IllegalArgumentException("Order with id " + orderId + " is not open");
+        }
+
+        OrderStatus orderStatus =
+                PaymentStatus.PAYMENT_FAILED.equals(paymentDetails.paymentStatus()) ?
+                        OrderStatus.OPEN :
+                        OrderStatus.FINISHED;
+        Order processedOrder = Order.builder()
+                .id(order.id())
+                .products(order.products())
+                .paymentDetails(paymentDetails)
+                .status(orderStatus)
+                .customerDetails(order.customerDetails())
+                .build();
+        return orderRepository.save(processedOrder);
     }
 
     private void assertExistingSeat(Seat seat) {
