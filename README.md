@@ -146,13 +146,14 @@ mvn test
 ## Limitations and Issues
 
 - No logging has been provided in the application,
-- Limited validation of objects,
 - Error handling is almost non-existent,
 - Request and Response objects are directly the models, should be DTOs,
 - We can only create empty orders (besides mandatory seat),
 - **IMPORTANT:** Since the `updateOrder` endpoint currently accepts the entire order object, may lead
   to potential issues such as price manipulation. The application does not validate product details
   when updating an order, and only checks id,
+- Limited validation of objects, such as Order and Product, either they will be used even if not
+  valid or fields may be ignored because not used,
 - There are concurrency issues and invalid states not addressed, such as error when removing from stock
   when order is already processed, this would leave the stock in an inconsistent state,
 - Repetitive code, needs a good refactoring,
