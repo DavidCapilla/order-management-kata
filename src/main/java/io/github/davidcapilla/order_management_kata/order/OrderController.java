@@ -1,7 +1,9 @@
 package io.github.davidcapilla.order_management_kata.order;
 
-
 import io.github.davidcapilla.order_management_kata.customer.Seat;
+import io.github.davidcapilla.order_management_kata.payment.PaymentDetails;
+import io.github.davidcapilla.order_management_kata.payment.PaymentService;
+import io.github.davidcapilla.order_management_kata.payment.PaymentStatus;
 import io.github.davidcapilla.order_management_kata.product.ProductService;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -22,6 +24,7 @@ public class OrderController {
 
     private OrderService orderService;
     private ProductService productService;
+    private PaymentService paymentService;
 
     @PostMapping
     public Order createOrder(@RequestBody Seat seat) {
@@ -39,6 +42,22 @@ public class OrderController {
             throw new IllegalArgumentException("Some products are out of stock");
         }
         return orderService.updateOrder(order);
+    }
+
+    @PostMapping("/{orderId}/process")
+    public Order processOrder(@PathVariable UUID orderId) {
+        Order order = orderService.getOrder(orderId);
+        if (!productService.hasStock(order.products())) {
+            throw new IllegalArgumentException("Some products are out of stock");
+        }
+        if (order.status() != OrderStatus.OPEN) {
+            throw new IllegalArgumentException("Order with id " + orderId + " is not open");
+        }
+        PaymentDetails paymentDetails = paymentService.processPayment(order.paymentDetails());
+        if (!PaymentStatus.PAYMENT_FAILED.equals(paymentDetails.paymentStatus())) {
+            productService.removeFromStock(order.products());
+        }
+        return orderService.processOrder(orderId, paymentDetails);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
