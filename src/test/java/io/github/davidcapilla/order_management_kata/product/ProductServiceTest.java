@@ -6,12 +6,16 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,6 +27,9 @@ class ProductServiceTest {
 
     @Mock
     ProductStockRepository productStockRepository;
+
+    @Captor
+    ArgumentCaptor<Stock> stockCaptor;
 
     @InjectMocks
     ProductService productService;
@@ -94,7 +101,6 @@ class ProductServiceTest {
     }
 
     @Test
-//    use 'lenient' strictness
     @MockitoSettings(strictness = Strictness.LENIENT)
     void hasStock_whenNotEnoughStock_thenReturnFalse() {
 
@@ -157,5 +163,80 @@ class ProductServiceTest {
                         product3));
 
         assertThat(result, is(true));
+    }
+
+    @Test
+    void removeFromStock_whenProductNotFound_throwsIllegalArgumentException() {
+        List<Product> products = List.of(new Product(
+                UUID.randomUUID(),
+                "Test Product",
+                new Price(100.0),
+                new Category(
+                        UUID.randomUUID(),
+                        "Test Category",
+                        null),
+                new Image("url/to/image.jpg")));
+        assertThrows(IllegalArgumentException.class,
+                     () -> productService.removeFromStock(products));
+    }
+
+    @Test
+    @MockitoSettings(strictness = Strictness.LENIENT)
+    void removeFromStock_whenNotEnoughStock_throwsIllegalArgumentException() {
+
+        Product product1 = mock(Product.class);
+        Product product2 = mock(Product.class);
+        Product product3 = mock(Product.class);
+        UUID product1Id = UUID.randomUUID();
+        UUID product2Id = UUID.randomUUID();
+        UUID product3Id = UUID.randomUUID();
+        when(product1.id()).thenReturn(product1Id);
+        when(product2.id()).thenReturn(product2Id);
+        when(product3.id()).thenReturn(product3Id);
+
+        Stock stock1 = new Stock(product1, 2);
+        Stock stock2 = new Stock(product2, 3);
+        Stock stock3 = new Stock(product3, 1);
+
+        when(productStockRepository.findById(product1Id)).thenReturn(stock1);
+        when(productStockRepository.findById(product2Id)).thenReturn(stock2);
+        when(productStockRepository.findById(product3Id)).thenReturn(stock3);
+
+        List<Product> products = List.of(product1, product2, product3, product1, product3);
+        assertThrows(IllegalArgumentException.class,
+                     () -> productService.removeFromStock(products));
+    }
+
+    @Test
+    void removeFromStock_whenEnoughStock_updateStock() {
+        Product product1 = mock(Product.class);
+        Product product2 = mock(Product.class);
+        Product product3 = mock(Product.class);
+        UUID product1Id = UUID.randomUUID();
+        UUID product2Id = UUID.randomUUID();
+        UUID product3Id = UUID.randomUUID();
+        when(product1.id()).thenReturn(product1Id);
+        when(product2.id()).thenReturn(product2Id);
+        when(product3.id()).thenReturn(product3Id);
+
+        Stock stock1 = new Stock(product1, 2);
+        Stock stock2 = new Stock(product2, 3);
+        Stock stock3 = new Stock(product3, 5);
+
+        when(productStockRepository.findById(product1Id)).thenReturn(stock1);
+        when(productStockRepository.findById(product2Id)).thenReturn(stock2);
+        when(productStockRepository.findById(product3Id)).thenReturn(stock3);
+
+        List<Product> products = List.of(product1, product2, product3, product1, product3);
+        productService.removeFromStock(products);
+
+//        Capture the stock that is saved
+        verify(productStockRepository, times(3) ).save(stockCaptor.capture());
+        List<Stock> capturedStock = stockCaptor.getAllValues();
+        assertThat(capturedStock,
+                   containsInAnyOrder(
+                           new Stock(product1, 0),
+                           new Stock(product2, 2),
+                           new Stock(product3, 3)));
     }
 }

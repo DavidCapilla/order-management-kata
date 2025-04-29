@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductStockRepository {
 
+    Stock save(Stock stock);
+
     List<Stock> findAll();
 
     Stock findById(UUID id);

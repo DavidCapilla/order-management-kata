@@ -11,6 +11,12 @@ public class InMemoryProductStockRepository implements ProductStockRepository {
     private final ConcurrentMap<UUID, Stock> stock = InitialStock.generateStock();
 
     @Override
+    public Stock save(Stock theStock) {
+        stock.put(theStock.product().id(), theStock);
+        return theStock;
+    }
+
+    @Override
     public List<Stock> findAll() {
         return stock.values().stream().toList();
     }

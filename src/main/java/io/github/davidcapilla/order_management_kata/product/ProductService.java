@@ -51,4 +51,28 @@ public class ProductService {
         }
         return true;
     }
+
+    public void removeFromStock(List<Product> products) {
+
+        Map<UUID, Long> productQuantities = products.stream()
+                .map(Product::id)
+                .collect(Collectors.groupingBy(id -> id, Collectors.counting()));
+
+        for (Map.Entry<UUID, Long> entry : productQuantities.entrySet()) {
+            UUID productId = entry.getKey();
+            long quantity = entry.getValue();
+
+            Stock stock = productStockRepository.findById(productId);
+            if (isNull(stock)) {
+                throw new IllegalArgumentException("Product with id " + productId + " not found");
+            }
+
+            if (stock.quantity() < quantity) {
+                throw new IllegalArgumentException("Not enough stock for product with id " + productId);
+            }
+
+            productStockRepository.save(new Stock(stock.product(),
+                                                  (int) (stock.quantity() - quantity)));
+        }
+    }
 }
