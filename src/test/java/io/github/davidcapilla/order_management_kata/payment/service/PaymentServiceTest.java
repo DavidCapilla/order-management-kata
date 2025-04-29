@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 import io.github.davidcapilla.order_management_kata.payment.gateway.PaymentGateway;
 import io.github.davidcapilla.order_management_kata.payment.model.PaymentDetails;
 import io.github.davidcapilla.order_management_kata.payment.model.PaymentStatus;
-import io.github.davidcapilla.order_management_kata.product.Price;
+import io.github.davidcapilla.order_management_kata.product.model.Price;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package io.github.davidcapilla.order_management_kata.product;
+package io.github.davidcapilla.order_management_kata.product.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -10,6 +10,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import io.github.davidcapilla.order_management_kata.product.model.Category;
+import io.github.davidcapilla.order_management_kata.product.model.Image;
+import io.github.davidcapilla.order_management_kata.product.model.Price;
+import io.github.davidcapilla.order_management_kata.product.model.Product;
+import io.github.davidcapilla.order_management_kata.product.model.Stock;
+import io.github.davidcapilla.order_management_kata.product.repository.ProductStockRepository;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

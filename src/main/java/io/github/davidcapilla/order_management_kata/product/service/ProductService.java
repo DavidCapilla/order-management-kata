@@ -1,7 +1,10 @@
-package io.github.davidcapilla.order_management_kata.product;
+package io.github.davidcapilla.order_management_kata.product.service;
 
 import static java.util.Objects.isNull;
 
+import io.github.davidcapilla.order_management_kata.product.model.Product;
+import io.github.davidcapilla.order_management_kata.product.model.Stock;
+import io.github.davidcapilla.order_management_kata.product.repository.ProductStockRepository;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;

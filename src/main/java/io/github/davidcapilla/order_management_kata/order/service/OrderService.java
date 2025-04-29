@@ -9,8 +9,8 @@ import io.github.davidcapilla.order_management_kata.order.repository.OrderReposi
 import io.github.davidcapilla.order_management_kata.order.model.OrderStatus;
 import io.github.davidcapilla.order_management_kata.payment.model.PaymentDetails;
 import io.github.davidcapilla.order_management_kata.payment.model.PaymentStatus;
-import io.github.davidcapilla.order_management_kata.product.Price;
-import io.github.davidcapilla.order_management_kata.product.Product;
+import io.github.davidcapilla.order_management_kata.product.model.Price;
+import io.github.davidcapilla.order_management_kata.product.model.Product;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

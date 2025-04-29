@@ -1,5 +1,10 @@
-package io.github.davidcapilla.order_management_kata.product;
+package io.github.davidcapilla.order_management_kata.product.repository;
 
+import io.github.davidcapilla.order_management_kata.product.model.Category;
+import io.github.davidcapilla.order_management_kata.product.model.Image;
+import io.github.davidcapilla.order_management_kata.product.model.Price;
+import io.github.davidcapilla.order_management_kata.product.model.Product;
+import io.github.davidcapilla.order_management_kata.product.model.Stock;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

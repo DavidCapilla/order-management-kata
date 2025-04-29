@@ -1,6 +1,8 @@
-package io.github.davidcapilla.order_management_kata.product;
+package io.github.davidcapilla.order_management_kata.product.controller;
 
 
+import io.github.davidcapilla.order_management_kata.product.model.Product;
+import io.github.davidcapilla.order_management_kata.product.service.ProductService;
 import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;

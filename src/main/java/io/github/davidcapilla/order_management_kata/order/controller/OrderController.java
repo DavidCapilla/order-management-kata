@@ -7,7 +7,7 @@ import io.github.davidcapilla.order_management_kata.order.service.OrderService;
 import io.github.davidcapilla.order_management_kata.payment.model.PaymentDetails;
 import io.github.davidcapilla.order_management_kata.payment.service.PaymentService;
 import io.github.davidcapilla.order_management_kata.payment.model.PaymentStatus;
-import io.github.davidcapilla.order_management_kata.product.ProductService;
+import io.github.davidcapilla.order_management_kata.product.service.ProductService;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

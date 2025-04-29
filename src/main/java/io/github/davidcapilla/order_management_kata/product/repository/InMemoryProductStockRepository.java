@@ -1,5 +1,6 @@
-package io.github.davidcapilla.order_management_kata.product;
+package io.github.davidcapilla.order_management_kata.product.repository;
 
+import io.github.davidcapilla.order_management_kata.product.model.Stock;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentMap;
