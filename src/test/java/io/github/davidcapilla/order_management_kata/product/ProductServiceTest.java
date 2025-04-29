@@ -239,4 +239,34 @@ class ProductServiceTest {
                            new Stock(product2, 2),
                            new Stock(product3, 3)));
     }
+
+    @Test
+    void getProductsByCategory_returnsAllProductsFromACategory() {
+
+        UUID category1Id = UUID.randomUUID();
+        UUID category2Id = UUID.randomUUID();
+        Category category1 = mock(Category.class);
+        when(category1.getId()).thenReturn(category1Id);
+        Category category2 = mock(Category.class);
+        when(category2.getId()).thenReturn(category2Id);
+
+        Product product1 = mock(Product.class);
+        when(product1.category()).thenReturn(category1);
+        Product product2 = mock(Product.class);
+        when(product2.category()).thenReturn(category1);
+        Product product3 = mock(Product.class);
+        when(product3.category()).thenReturn(category2);
+
+        List<Stock> stock = List.of(
+                new Stock(product1, 10),
+                new Stock(product2, 20),
+                new Stock(product3, 30));
+
+        when(productStockRepository.findAll()).thenReturn(stock);
+
+        List<Product> result = productService.getProductsByCategory(category1Id);
+        assertThat(result, is(notNullValue()));
+        assertThat(result, containsInAnyOrder(product1, product2)
+        );
+    }
 }

@@ -30,6 +30,14 @@ public class ProductService {
         return stock.product();
     }
 
+    public List<Product> getProductsByCategory(UUID categoryId) {
+
+        return productStockRepository.findAll().stream()
+                .map(Stock::product)
+                .filter(product -> categoryId.equals(product.category().getId()))
+                .toList();
+    }
+
     public boolean hasStock(List<Product> products) {
 
         Map<UUID, Long> productQuantities = products.stream()
