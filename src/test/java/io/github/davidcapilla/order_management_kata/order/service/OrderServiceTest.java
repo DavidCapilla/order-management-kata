@@ -1,4 +1,4 @@
-package io.github.davidcapilla.order_management_kata.order;
+package io.github.davidcapilla.order_management_kata.order.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -10,6 +10,9 @@ import static org.mockito.Mockito.when;
 
 import io.github.davidcapilla.order_management_kata.customer.CustomerDetails;
 import io.github.davidcapilla.order_management_kata.customer.Seat;
+import io.github.davidcapilla.order_management_kata.order.model.Order;
+import io.github.davidcapilla.order_management_kata.order.model.OrderStatus;
+import io.github.davidcapilla.order_management_kata.order.repository.OrderRepository;
 import io.github.davidcapilla.order_management_kata.payment.model.PaymentDetails;
 import io.github.davidcapilla.order_management_kata.payment.model.PaymentStatus;
 import java.util.Collections;

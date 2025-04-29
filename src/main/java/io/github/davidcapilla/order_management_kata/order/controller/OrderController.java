@@ -1,6 +1,9 @@
-package io.github.davidcapilla.order_management_kata.order;
+package io.github.davidcapilla.order_management_kata.order.controller;
 
 import io.github.davidcapilla.order_management_kata.customer.Seat;
+import io.github.davidcapilla.order_management_kata.order.model.Order;
+import io.github.davidcapilla.order_management_kata.order.model.OrderStatus;
+import io.github.davidcapilla.order_management_kata.order.service.OrderService;
 import io.github.davidcapilla.order_management_kata.payment.model.PaymentDetails;
 import io.github.davidcapilla.order_management_kata.payment.service.PaymentService;
 import io.github.davidcapilla.order_management_kata.payment.model.PaymentStatus;

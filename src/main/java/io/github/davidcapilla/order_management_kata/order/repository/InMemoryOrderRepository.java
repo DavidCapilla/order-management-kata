@@ -1,5 +1,6 @@
-package io.github.davidcapilla.order_management_kata.order;
+package io.github.davidcapilla.order_management_kata.order.repository;
 
+import io.github.davidcapilla.order_management_kata.order.model.Order;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Repository;

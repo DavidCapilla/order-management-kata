@@ -1,4 +1,4 @@
-package io.github.davidcapilla.order_management_kata.order;
+package io.github.davidcapilla.order_management_kata.order.model;
 
 import io.github.davidcapilla.order_management_kata.customer.CustomerDetails;
 import io.github.davidcapilla.order_management_kata.product.Product;
