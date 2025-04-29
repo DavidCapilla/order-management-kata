@@ -1,9 +1,9 @@
 package io.github.davidcapilla.order_management_kata.order;
 
 import io.github.davidcapilla.order_management_kata.customer.Seat;
-import io.github.davidcapilla.order_management_kata.payment.PaymentDetails;
-import io.github.davidcapilla.order_management_kata.payment.PaymentService;
-import io.github.davidcapilla.order_management_kata.payment.PaymentStatus;
+import io.github.davidcapilla.order_management_kata.payment.model.PaymentDetails;
+import io.github.davidcapilla.order_management_kata.payment.service.PaymentService;
+import io.github.davidcapilla.order_management_kata.payment.model.PaymentStatus;
 import io.github.davidcapilla.order_management_kata.product.ProductService;
 import java.util.UUID;
 import lombok.AllArgsConstructor;

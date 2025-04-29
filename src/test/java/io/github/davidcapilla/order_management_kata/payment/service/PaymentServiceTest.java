@@ -1,4 +1,4 @@
-package io.github.davidcapilla.order_management_kata.payment;
+package io.github.davidcapilla.order_management_kata.payment.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -7,6 +7,8 @@ import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 import io.github.davidcapilla.order_management_kata.payment.gateway.PaymentGateway;
+import io.github.davidcapilla.order_management_kata.payment.model.PaymentDetails;
+import io.github.davidcapilla.order_management_kata.payment.model.PaymentStatus;
 import io.github.davidcapilla.order_management_kata.product.Price;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.AfterEach;

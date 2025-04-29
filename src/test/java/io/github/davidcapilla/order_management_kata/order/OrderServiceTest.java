@@ -10,8 +10,8 @@ import static org.mockito.Mockito.when;
 
 import io.github.davidcapilla.order_management_kata.customer.CustomerDetails;
 import io.github.davidcapilla.order_management_kata.customer.Seat;
-import io.github.davidcapilla.order_management_kata.payment.PaymentDetails;
-import io.github.davidcapilla.order_management_kata.payment.PaymentStatus;
+import io.github.davidcapilla.order_management_kata.payment.model.PaymentDetails;
+import io.github.davidcapilla.order_management_kata.payment.model.PaymentStatus;
 import java.util.Collections;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

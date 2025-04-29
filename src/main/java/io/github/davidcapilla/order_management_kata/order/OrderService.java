@@ -4,8 +4,8 @@ import static java.util.Objects.isNull;
 
 import io.github.davidcapilla.order_management_kata.customer.CustomerDetails;
 import io.github.davidcapilla.order_management_kata.customer.Seat;
-import io.github.davidcapilla.order_management_kata.payment.PaymentDetails;
-import io.github.davidcapilla.order_management_kata.payment.PaymentStatus;
+import io.github.davidcapilla.order_management_kata.payment.model.PaymentDetails;
+import io.github.davidcapilla.order_management_kata.payment.model.PaymentStatus;
 import io.github.davidcapilla.order_management_kata.product.Price;
 import io.github.davidcapilla.order_management_kata.product.Product;
 import java.util.ArrayList;

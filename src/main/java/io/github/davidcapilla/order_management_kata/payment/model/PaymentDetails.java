@@ -1,4 +1,4 @@
-package io.github.davidcapilla.order_management_kata.payment;
+package io.github.davidcapilla.order_management_kata.payment.model;
 
 import io.github.davidcapilla.order_management_kata.payment.gateway.PaymentGateway;
 import io.github.davidcapilla.order_management_kata.product.Price;
